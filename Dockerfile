@@ -1,28 +1,30 @@
-FROM node:23-slim as production
+FROM node:23-slim as base
+
+EXPOSE 8080
+EXPOSE 443
 
 WORKDIR /workdir
-ARG SERVICE_NAME
+COPY . .
 
-ENV NODE_ENV=production
-ENV NODE_PATH=.
-ENV LOGS_BUCKET_LOCATION=gs://curly_build_logs
+# ARG SERVICE_NAME
 
-# install dependencies for root package.json
+# ENV NODE_ENV=production
+# ENV NODE_PATH=.
+# ENV LOGS_BUCKET_LOCATION=gs://curly_build_logs
+
 RUN npm install
-RUN npm install -g nx
-RUN nx build api --configuration=production
 
-COPY package.json package-lock.json ./
+ENV PORT=8080
+RUN ./node_modules/.bin/nx build api --configuration=production
 
-FROM production AS builder
-WORKDIR /workdir
+FROM base AS final
+WORKDIR /dist
+#COPY apps/api/dist ./
 
-#COPY --from=builder /workdir/dist/apps/${SERVICE_NAME} /workdir/
-#COPY --from=builder /workdir/package-lock.json /workdir/package-lock.json
+COPY --from=base /workdir/apps/api/dist .
+# COPY --from=builder /workdir/package-lock.json /workdir/package-lock.json
 
-# Install production dependencies only
-#RUN npm install
 # tslib issue: https://github.com/nrwl/nx/issues/2625
-#RUN npm add tslib@2.3.1
+RUN npm add tslib@2.3.1
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "main.js"]
