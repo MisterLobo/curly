@@ -21,6 +21,9 @@ steps:
     args: ['push', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA']
     id: 'docker-push'
   - name: ubuntu
+    entrypoint: chmod
+    args: ['+x', 'scripts/setup.sh']
+  - name: ubuntu
     entrypoint: bash
     args:
       - '-c'
