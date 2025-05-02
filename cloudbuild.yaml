@@ -3,12 +3,15 @@ steps:
   - name: 'node'
     entrypoint: 'npm'
     args: ['install']
+    id: 'deps-install'
   - name: 'bash'
     script: |
       #!/usr/bin/env bash
-      pwd
-      ls -al
+      whoami
+      apt-get update
+      apt-get install node
       ./node_modules/.bin/nx test api
+    waitFor: ['deps-install']
   # Docker Build
   - name: 'docker'
     args: ['build', '-t', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA', '.']
