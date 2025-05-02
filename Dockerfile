@@ -1,46 +1,22 @@
-FROM node:22-bullseye as dependency
+FROM node:22-bullseye-slim as production
 
 WORKDIR /workdir
 
 ARG SERVICE_NAME
 
 # install dependencies for root package.json
-COPY package.json yarn.lock ./
-RUN yarn install
-
-# Development image
-FROM dependency as development
-
-WORKDIR /workdir
-
-ARG SERVICE_NAME
-
-ENV SERVICE_NAME=${SERVICE_NAME}
-ENV NODE_ENV=development
-ENV APP_ENV=local
-ENV NODE_PATH=.
-
-COPY ./ .
-
-CMD ["sh" , "-c", "yarn start ${SERVICE_NAME}"]
-
+COPY package.json package-lock.json ./
+RUN npm install
+RUN npm install -g nx
 
 # Builder to compile Typescript
-FROM dependency as builder
-
-WORKDIR /workdir
-
-ARG SERVICE_NAME
+FROM production as builder
 
 ENV NODE_ENV=production
 ENV NODE_PATH=.
 
 COPY ./ .
-RUN bun nx build ${SERVICE_NAME} --configuration=production
-
-
-# Production image
-FROM node:22-bullseye-slim as production
+RUN nx build ${SERVICE_NAME} --configuration=production
 
 WORKDIR /workdir
 
@@ -57,4 +33,4 @@ RUN npm install
 # tslib issue: https://github.com/nrwl/nx/issues/2625
 RUN npm add tslib@2.3.1
 
-CMD ["node", "main.js"]
+CMD ["node", "apps/dist/main.js"]
