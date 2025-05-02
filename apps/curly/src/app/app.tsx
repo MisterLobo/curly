@@ -6,6 +6,7 @@ export function App() {
   return (
     <div>
       <NxWelcome title="curly" />
+      <div className="cf-turnstile" data-sitekey="0x4AAAAAABZLeVlgGU5pfvrC"></div>
 
       {/* START: routes */}
       {/* These routes and navigation have been generated for you */}
