@@ -72,19 +72,19 @@ steps:
       - $_PLATFORM
     id: 'deploy'
   # Deploy
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    args:
-      - run
-      - deploy
-      - $_SERVICE_NAME
-      - '--image'
-      - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
-      - '--region'
-      - $_DEPLOY_REGION
-      - '--platform'
-      - $_PLATFORM
-    entrypoint: gcloud
-    id: 'deploy'
+  # - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  #   args:
+  #     - run
+  #     - deploy
+  #     - $_SERVICE_NAME
+  #     - '--image'
+  #     - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
+  #     - '--region'
+  #     - $_DEPLOY_REGION
+  #     - '--platform'
+  #     - $_PLATFORM
+  #   entrypoint: gcloud
+  #   id: 'deploy'
 timeout: 600s
 images:
   - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
