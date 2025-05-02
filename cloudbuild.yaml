@@ -4,31 +4,35 @@ steps:
     entrypoint: 'npm'
     args: ['install']
     id: 'deps-install'
-  - name: 'bash'
-    script: |
-      #!/usr/bin/env bash
-      whoami
-      apt-get update
-      apt-get install node
-      ./node_modules/.bin/nx test api
-    waitFor: ['deps-install']
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['run', 'build-api']
+    id: 'build-api'
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['run', 'test-api']
+    id: 'test-api'
   # Docker Build
   - name: 'docker'
     args: ['build', '-t', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA', '.']
+    id: 'docker-build'
   # Docker Push
   - name: 'docker'
     args: ['push', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA']
+    id: 'docker-push'
   # Update gcloud
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     args:
       - components
       - update
     entrypoint: gcloud
+    id: 'gcloud-update'
   # Check version
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     args:
       - --version
     entrypoint: gcloud
+    id: 'gcloud-check-version'
   # Deploy
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     args:
@@ -42,6 +46,7 @@ steps:
       - '--platform'
       - $_PLATFORM
     entrypoint: gcloud
+    id: 'deploy'
 timeout: 600s
 images:
   - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
