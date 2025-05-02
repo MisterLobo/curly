@@ -58,18 +58,15 @@ steps:
   # Deploy Manually
   - name: ubuntu
     entrypoint: bash
-    args:
-      - '-c'
-      - scripts/gcloud.sh
-      - run
-      - deploy
-      - $_SERVICE_NAME
-      - '--image'
-      - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
-      - '--region'
-      - $_DEPLOY_REGION
-      - '--platform'
-      - $_PLATFORM
+    args: ['-c', 'scripts/gcloud.sh', 'run', 'deploy', $_SERVICE_NAME, '--image', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA', '--region', $_DEPLOY_REGION, '--platform', $_PLATFORM]
+    env:
+    - 'AR_HOSTNAME=$_AR_HOSTNAME'
+    - 'PROJECT_ID=$PROJECT_ID'
+    - 'AR_REPO=$_AR_REPO'
+    - 'SERVICE_NAME=$_SERVICE_NAME'
+    - 'COMMIT_SHA=$COMMIT_SHA'
+    - 'DEPLOY_REGION=$_DEPLOY_REGION'
+    - 'PLATFORM=$_PLATFORM'
     id: 'deploy'
   # Deploy
   # - name: gcr.io/google.com/cloudsdktool/cloud-sdk
