@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "gcp-build": "nx build api && ls"
+    "gcp-build": "nx build api && ls",
+    "build-app": "nx build curly",
+    "test-app": "nx test curly",
+    "test-api": "nx test api",
+    "build-api": "nx build api"
   },
   "private": true,
   "dependencies": {
