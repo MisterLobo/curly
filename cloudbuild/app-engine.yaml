@@ -14,9 +14,6 @@
 
 # [START cloudbuild_npm_node]
 steps:
-  - name: working_dir
-    entrypoint: cd
-    args: ["apps/api"]
   # Install dependencies
   - name: install
     entrypoint: bun
@@ -29,6 +26,17 @@ steps:
   - name: build
     entrypoint: bun
     args: ["run", "build"]
+  - name: gcp
+    dir: dist/apps/${_SERVICE_NAME}
+    entrypoint: gcloud
+    args:
+      - app
+      - deploy
+      - app-engine-yaml
+      - --version=$SHORT_SHA
+      - --promote
+      - --stop-previous-version
+      - --quiet
 # [END cloudbuild_npm_node]
 options:
   logging: CLOUD_LOGGING_ONLY
