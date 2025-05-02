@@ -2,7 +2,9 @@
   "name": "@curly/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "gcp-build": "nx build api && ls"
+  },
   "private": true,
   "dependencies": {
     "@prisma/client": "^6.7.0",
