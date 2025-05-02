@@ -18,11 +18,11 @@ steps:
     entrypoint: cd
     args: ["apps/api"]
   # Install dependencies
-  - name: install deps
+  - name: install
     entrypoint: bun
     args: ["install"]
   # Run tests
-  - name: run tests
+  - name: tests
     entrypoint: bun
     args: ["test"]
   # Run custom commands
