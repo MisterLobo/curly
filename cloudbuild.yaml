@@ -21,7 +21,7 @@ steps:
     args: ['push', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA']
     id: 'docker-push'
   - name: ubuntu
-    args: ['echo', '$PATH']
+    args: ['echo', '\$PATH']
     id: 'check-PATH'
   - name: ubuntu
     args: ['apt', 'update']
