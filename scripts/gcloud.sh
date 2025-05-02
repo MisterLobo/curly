@@ -1,16 +1,20 @@
 #!/bin/bash
 
-$ARGS=$@
+pwd
+
+ARGS=$@
 
 echo $ARGS
 
 apt-get update
 apt-get install curl tar
 
+CWD=$(pwd)
+
 curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
 
 ls
-tar -xf ./google-cloud-cli-linux-x86_64.tar.gz
+tar -xf "$CWD/google-cloud-cli-linux-x86_64.tar.gz"
 
 ./google-cloud-sdk/bin/gcloud $@
 
