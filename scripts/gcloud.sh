@@ -27,5 +27,3 @@ tar -xf "$CWD/google-cloud-cli-linux-x86_64.tar.gz"
   --image "$AR_HOSTNAME/$PROJECT_ID/$AR_REPO/$SERVICE_NAME:$COMMIT_SHA" \
   --region $DEPLOY_REGION \
   --platform $PLATFORM
-
-#run deploy $_SERVICE_NAME --image '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA' --region $_DEPLOY_REGION --platform $_PLATFORM

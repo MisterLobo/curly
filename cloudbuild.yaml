@@ -24,41 +24,10 @@ steps:
   - name: ubuntu
     entrypoint: chmod
     args: ['+x', 'scripts/setup.sh', 'scripts/gcloud.sh']
-  # CI bootstrap
-  - name: ubuntu
-    entrypoint: bash
-    args:
-      - '-c'
-      - scripts/setup.sh
-    timeout: 300s
-    id: 'ci-boostrap'
-  # Check user
-  - name: ubuntu
-    args: ['whoami']
-    id: 'check-user'
-  # Find bins
-  - name: ubuntu
-    entrypoint: which
-    args: ['apt', 'apt-get']
-    id: 'find-bins'
-  # Update
-  - name: ubuntu
-    entrypoint: apt-get
-    args: ['update']
-  # - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-  #   args: ['apt-get', 'update', '&&', 'apt-get', '--only-upgrade', 'install', 'google-cloud-cli-skaffold', 'google-cloud-cli-gke-gcloud-auth-plugin', 'google-cloud-cli-enterprise-certificate-proxy', 'google-cloud-cli-istioctl', 'google-cloud-cli-firestore-emulator', 'google-cloud-cli-anthos-auth','google-cloud-cli-app-engine-go', 'google-cloud-cli-cloud-build-local','google-cloud-cli-spanner-migration-tool', 'google-cloud-cli-kubectl-oidc','google-cloud-cli-managed-flink-client', 'google-cloud-cli-bigtable-emulator','google-cloud-cli-app-engine-python', 'google-cloud-cli-datastore-emulator','google-cloud-cli-spanner-emulator', 'google-cloud-cli-kpt', 'google-cloud-cli-app-engine-grpc','google-cloud-cli', 'google-cloud-cli-app-engine-java', 'google-cloud-cli-app-engine-python-extras','google-cloud-cli-cloud-run-proxy', 'google-cloud-cli-log-streaming', 'google-cloud-cli-terraform-tools', 'google-cloud-cli-cbt', 'google-cloud-cli-local-extract', 'google-cloud-cli-config-connector', 'kubectl', 'google-cloud-cli-minikube', 'google-cloud-cli-docker-credential-gcr', 'google-cloud-cli-nomos', 'google-cloud-cli-pubsub-emulator', 'google-cloud-cli-package-go-module', 'google-cloud-cli-anthoscli']
-  #   id: 'gcloud-update'
-  # Check version
-  # - name: ubuntu
-  #   entrypoint: bash
-  #   args:
-  #     - '-c'
-  #     - scripts/gcloud.sh
-  #   id: 'gcloud-check-version'
   # Deploy Manually
   - name: ubuntu
     entrypoint: bash
-    args: ['-c', 'scripts/gcloud.sh', 'run', 'deploy', $_SERVICE_NAME, '--image', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA', '--region', $_DEPLOY_REGION, '--platform', $_PLATFORM]
+    args: ['-c', 'scripts/gcloud.sh']
     env:
     - 'AR_HOSTNAME=$_AR_HOSTNAME'
     - 'PROJECT_ID=$PROJECT_ID'
@@ -68,20 +37,6 @@ steps:
     - 'DEPLOY_REGION=$_DEPLOY_REGION'
     - 'PLATFORM=$_PLATFORM'
     id: 'deploy'
-  # Deploy
-  # - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-  #   args:
-  #     - run
-  #     - deploy
-  #     - $_SERVICE_NAME
-  #     - '--image'
-  #     - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
-  #     - '--region'
-  #     - $_DEPLOY_REGION
-  #     - '--platform'
-  #     - $_PLATFORM
-  #   entrypoint: gcloud
-  #   id: 'deploy'
 timeout: 600s
 images:
   - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
