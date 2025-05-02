@@ -2,10 +2,7 @@
 
 pwd
 
-ARGS=$@
-
-echo $ARGS
-
+# Check env
 echo $SERVICE_NAME
 echo $AR_HOSTNAME
 echo $PROJECT_ID
