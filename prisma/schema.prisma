@@ -1,0 +1,16 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output = ".generated/prisma"
+}
+
+model Curly {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  alias     String @unique
+  createdAt DateTime @default(now())
+}
