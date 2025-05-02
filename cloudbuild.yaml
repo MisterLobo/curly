@@ -15,28 +15,30 @@
 # [START cloudbuild_npm_node]
 steps:
   # Install dependencies
-  - name: install
-    entrypoint: bun
-    args: ["install"]
-  # Run tests
-  - name: tests
-    entrypoint: bun
-    args: ["test"]
-  # Run custom commands
-  - name: build
-    entrypoint: bun
-    args: ["run", "build"]
-  - name: gcp
-    dir: dist/apps/${_SERVICE_NAME}
-    entrypoint: gcloud
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['install']
+  # Docker Build
+  - name: 'docker'
+    args: ['build', '-t', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA', '.']
+  # Docker Push
+  - name: 'docker'
+    args: ['push', '-t', '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA']
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     args:
-      - app
+      - run
       - deploy
-      - app-engine-yaml
-      - --version=$SHORT_SHA
-      - --promote
-      - --stop-previous-version
-      - --quiet
+      - $_SERVICE_NAME
+      - '--image'
+      - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
+      - '--region'
+      - $_DEPLOY_REGION
+      - '--platform'
+      - $_PLATFORM
+    entrypoint: gcloud
 # [END cloudbuild_npm_node]
+timeout: 600s
+images:
+  - '$_AR_HOSTNAME/$PROJECT_ID/$_AR_REPO/$_SERVICE_NAME:$COMMIT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
