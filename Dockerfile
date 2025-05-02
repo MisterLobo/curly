@@ -1,4 +1,4 @@
-FROM node:latest as production
+FROM node:23-slim as production
 
 ARG SERVICE_NAME
 
