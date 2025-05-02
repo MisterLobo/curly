@@ -2,38 +2,10 @@
   "name": "@curly/api",
   "version": "0.0.1",
   "private": true,
-  "nx": {
-    "targets": {
-      "serve": {
-        "executor": "@nx/js:node",
-        "defaultConfiguration": "development",
-        "dependsOn": [
-          "build"
-        ],
-        "options": {
-          "buildTarget": "@curly/api:build",
-          "runBuildTargetDependencies": false
-        },
-        "configurations": {
-          "development": {
-            "buildTarget": "@curly/api:build:development"
-          },
-          "production": {
-            "buildTarget": "@curly/api:build:production"
-          }
-        }
-      },
-      "test": {
-        "options": {
-          "passWithNoTests": true
-        }
-      },
-      "docker-build": {
-        "dependsOn": [
-          "build"
-        ],
-        "command": "docker build -f apps/api/Dockerfile . -t @curly/api"
-      }
-    }
+  "devDependencies": {
+    "prisma": "^6.7.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.7.0"
   }
 }

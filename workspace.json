@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "curly": "apps/curly",
+    "curly-e2e": "apps/curly-e2e",
+    "api": "apps/api",
+    "api-e2e": "apps/api-e2e"
+  }
+}
