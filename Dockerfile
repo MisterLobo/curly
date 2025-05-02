@@ -4,6 +4,7 @@ ARG SERVICE_NAME
 
 ENV NODE_ENV=production
 ENV NODE_PATH=.
+ENV LOGS_BUCKET_LOCATION=curly_build_logs
 
 # install dependencies for root package.json
 RUN npm install
